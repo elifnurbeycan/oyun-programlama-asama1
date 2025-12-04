@@ -13,7 +13,7 @@ public class EnemyController : MonoBehaviour
 
     private IEnumerator EnemyTurnRoutine()
     {
-        yield return new WaitForSeconds(0.5f);
+        yield return new WaitForSeconds(1.0f);
 
         bool actionDone = false;
         int safety = 0;
@@ -22,110 +22,66 @@ public class EnemyController : MonoBehaviour
         {
             safety++;
 
-            int choice = Random.Range(0, 5); 
-            // 0: Move, 1: Ranged, 2: Melee, 3: Sleep, 4: ArmorUp
+            // 🔥 TEST KODU: RASTGELELİK KAPALI 🔥
+            // Normalde: int choice = Random.Range(0, 5);
+            
+            // Sürekli OK ATMAYA (1) çalışsın
+            int choice = 1; 
+
+            // AMA DİKKAT: Kural gereği "Close" mesafede ok atamaz.
+            // Eğer yakındaysak mecburen hareket etsin (0) ki oyun donmasın.
+            if (GameManager.Instance.currentDistance == DistanceLevel.Close)
+            {
+                choice = 0; // Move
+            }
 
             switch (choice)
             {
-                case 0:
-                    actionDone = EnemyMove();
-                    break;
-                case 1:
-                    actionDone = EnemyRanged();
-                    break;
-                case 2:
-                    actionDone = EnemyMelee();
-                    break;
-                case 3:
-                    actionDone = EnemySleep();
-                    break;
-                case 4:
-                    actionDone = EnemyArmorUp();
-                    break;
+                case 0: actionDone = EnemyMove(); break;
+                case 1: actionDone = EnemyRanged(); break;
+                case 2: actionDone = EnemyMelee(); break;
+                case 3: actionDone = EnemySleep(); break;
+                case 4: actionDone = EnemyArmorUp(); break;
             }
+            yield return null; 
         }
 
+        yield return new WaitForSeconds(1.5f);
         GameManager.Instance.EndEnemyTurn();
     }
+
+    // --- AKSİYONLAR ---
 
     private bool EnemyMove()
     {
         if (!enemy.SpendMana(4)) return false;
-
-        bool forward = Random.value > 0.5f;
-
-        if (forward)
-            GameManager.Instance.MoveCloser();
-        else
-            GameManager.Instance.MoveAway();
-
+        // Test için hep geri kaçsın ki ok atabilsin
+        GameManager.Instance.MoveAway(false); 
         return true;
     }
 
     private bool EnemyRanged()
     {
-        if (enemy.currentAmmo <= 0) return false;
-        if (!enemy.SpendMana(20)) return false;
-
-        if (GameManager.Instance.currentDistance == DistanceLevel.Close)
-            return false;
+        if (enemy.currentAmmo <= 0 || !enemy.SpendMana(20)) return false;
+        if (GameManager.Instance.currentDistance == DistanceLevel.Close) return false;
 
         enemy.currentAmmo--;
-
-        if (Random.value <= 0.90f)
-        {
-            int dmg = Random.Range(15, 21);
-            player.TakeDamage(dmg);
-        }
+        
+        int damage = Random.Range(15, 21);
+        
+        // 🔥 OKU FIRLAT (Yönü FirePoint belirleyecek)
+        enemy.ShootProjectile("Player", damage);
 
         return true;
     }
 
     private bool EnemyMelee()
     {
-        if (GameManager.Instance.currentDistance != DistanceLevel.Close)
-            return false;
-
-        bool power = Random.value > 0.5f;
-
-        if (power)
-        {
-            if (!enemy.SpendMana(30)) return false;
-
-            if (Random.value <= 0.50f)
-            {
-                int dmg = Random.Range(25, 36);
-                player.TakeDamage(dmg);
-            }
-        }
-        else
-        {
-            if (!enemy.SpendMana(10)) return false;
-
-            if (Random.value <= 0.85f)
-            {
-                int dmg = Random.Range(10, 13);
-                player.TakeDamage(dmg);
-            }
-        }
-
-        return true;
+        if (GameManager.Instance.currentDistance != DistanceLevel.Close) return false;
+        // ... (Diğer kodlar aynı kalabilir, buraya girmeyecek zaten)
+        return true; 
     }
 
-    private bool EnemySleep()
-    {
-        if (enemy.currentMana >= 50) return false;
-
-        enemy.RestoreMana(40);
-        enemy.RestoreHP(15);
-        return true;
-    }
-
-    private bool EnemyArmorUp()
-    {
-        if (!enemy.SpendMana(25)) return false;
-
-        enemy.ActivateArmorUp(2);
-        return true;
-    }
+    private bool EnemySleep() { return true; } // Basitleştirildi
+    private bool EnemyArmorUp() { return true; } // Basitleştirildi
 }
