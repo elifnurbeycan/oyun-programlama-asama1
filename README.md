@@ -49,6 +49,19 @@ Oyun, karakterlerin durumuna göre **Animator State Machine** kullanarak akıcı
 
 ---
 
+## 🔊 Ses ve Müzik (Audio Assets)
+
+Oyun atmosferini güçlendirmek için aşağıdaki ses efektleri ve müzikler kullanılmıştır. Ses seviyeleri Ana Menü üzerinden kontrol edilebilir.
+
+| Ses Dosyası | Kullanım Yeri | Açıklama |
+| :--- | :--- | :--- |
+| **🎵 Background Music** | Genel | Ana Menü ve Savaş ekranında sürekli çalan döngüsel (loop) atmosfer müziği. |
+| **👣 Walk Sound** | Hareket | Karakter `Move` aksiyonunu gerçekleştirirken çalan adım sesleri. |
+| **⚔️ Attack Sound** | Saldırı | Ok fırlatma veya Kılıç savurma anında çalan efekt. |
+| **💥 Hit/Damage Sound** | Hasar Alma | Karakter veya Rakip hasar aldığında çalan darbe sesi. |
+
+---
+
 ## ⚙️ Teknik Özellikler ve Geliştirme Notları
 
 Bu proje eğitim amaçlı geliştirilmiştir ve aşağıdaki teknik yapıları içerir:
