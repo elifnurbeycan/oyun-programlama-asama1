@@ -85,5 +85,5 @@ Projeyi kendi bilgisayarınızda çalıştırmak için:
 
 ---
 
-**Geliştirici:** [Adınız Soyadınız]
+**Geliştirici:** [Elif Nur Beycan]
 **Ders:** Oyun Programlama
