@@ -85,5 +85,5 @@ Projeyi kendi bilgisayarınızda çalıştırmak için:
 
 ---
 
-**Geliştirici:** [Elif Nur Beycan]
+**Geliştirici:** Elif Nur Beycan
 **Ders:** Oyun Programlama
